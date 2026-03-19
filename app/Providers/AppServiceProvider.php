@@ -2,23 +2,22 @@
 
 namespace App\Providers;
 
+use App\Repositories\Contracts\StatRepositoryInterface;
+use App\Repositories\Contracts\SlugRepositoryInterface;
+use App\Repositories\StatRepository;
+use App\Repositories\SlugRepository;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
-    public function register(): void
-    {
-        //
-    }
+  public function register(): void
+  {
+      $this->app->bind(SlugRepositoryInterface::class, SlugRepository::class);
+      $this->app->bind(StatRepositoryInterface::class, StatRepository::class);
+  }
 
-    /**
-     * Bootstrap any application services.
-     */
-    public function boot(): void
-    {
-        //
-    }
+  public function boot(): void
+  {
+      //
+  }
 }
