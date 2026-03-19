@@ -12,7 +12,6 @@ Servicio acortador de URLs construido con **Laravel 12** y **PHP 8.2+**. Permite
 | Composer | 2.x |
 | Node.js | 18+ |
 | npm | 9+ |
-| MySQL | 8.0 (o MariaDB 10.6+) |
 
 ---
 
@@ -36,32 +35,18 @@ Esto ejecuta automáticamente:
 1. `composer install` — instala dependencias PHP.
 2. Copia `.env.example` a `.env` si no existe.
 3. `php artisan key:generate` — genera la clave de la aplicación.
-4. `php artisan migrate --force` — ejecuta las migraciones.
-5. `npm install` — instala dependencias JS.
-6. `npm run build` — compila assets con Vite.
+4. Crea la base de datos SQLite (`database/database.sqlite`) si no existe.
+5. Configura `DB_DATABASE` en `.env` con la ruta absoluta al archivo SQLite.
+6. `php artisan migrate:fresh --seed` — ejecuta migraciones y seeders.
+7. `npm install` — instala dependencias JS.
+8. `npm run build` — compila assets con Vite.
+9. `composer run dev` — levanta el entorno de desarrollo.
 
-### 3. Configurar variables de entorno
+> No es necesario configurar nada manualmente. El proyecto usa **SQLite** como base de datos, por lo que no requiere instalar ni configurar MySQL u otro motor externo.
 
-Edita el archivo `.env` con los datos de tu base de datos:
+### 3. Levantar el entorno de desarrollo
 
-```dotenv
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=desafio_asset
-DB_USERNAME=root
-DB_PASSWORD=
-
-QUEUE_CONNECTION=database
-```
-
-### 4. Ejecutar migraciones y seeders
-
-```bash
-php artisan migrate:fresh --seed
-```
-
-### 5. Levantar el entorno de desarrollo
+`composer setup` ya inicia el entorno de desarrollo automáticamente al finalizar. Si necesitas levantarlo nuevamente de forma independiente, puedes ejecutar:
 
 ```bash
 composer dev
@@ -75,8 +60,6 @@ Esto inicia en paralelo:
 | `php artisan queue:listen` | Worker de colas (procesa jobs de estadísticas) |
 | `php artisan pail` | Visor de logs en tiempo real |
 | `npm run dev` | Servidor Vite para hot-reload de assets |
-
-> También puedes iniciar cada proceso por separado si lo prefieres.
 
 ---
 
