@@ -16,6 +16,16 @@ class SlugController extends Controller
     private SlugService $slugService
   ) {}
 
+  public function index(Request $request): JsonResponse
+  {
+    $perPage = (int) $request->query('per_page', 15);
+    $perPage = min(max($perPage, 1), 100);
+
+    $slugs = $this->slugService->list($perPage);
+
+    return response()->json($slugs);
+  }
+
   public function shorten(SlugShortenRequest $request): JsonResponse
   {
     try {

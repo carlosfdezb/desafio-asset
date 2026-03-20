@@ -16,6 +16,10 @@ class Slug extends Model
     'api_key',
   ];
 
+  protected $hidden = [
+    'api_key',
+  ];
+
   public function stats()
   {
     return $this->hasMany(Stat::class);

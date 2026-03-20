@@ -4,10 +4,16 @@ namespace App\Repositories;
 
 use App\Models\Slug;
 use App\Repositories\Contracts\SlugRepositoryInterface;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
 class SlugRepository implements SlugRepositoryInterface
 {
+  public function paginate(int $perPage = 15): LengthAwarePaginator
+  {
+    return Slug::latest()->paginate($perPage);
+  }
+
   public function findBySlug(string $slug): ?Slug
   {
     return Slug::where('slug', $slug)->first();

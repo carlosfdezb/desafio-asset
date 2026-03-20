@@ -8,6 +8,7 @@ use App\Repositories\Contracts\SlugRepositoryInterface;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class SlugService
@@ -15,6 +16,11 @@ class SlugService
   public function __construct(
     private SlugRepositoryInterface $slugRepository
   ) {}
+
+  public function list(int $perPage = 15): LengthAwarePaginator
+  {
+    return $this->slugRepository->paginate($perPage);
+  }
 
   public function redirect(string $slug, ?string $referer = null, ?string $ip = null): Slug
   {
