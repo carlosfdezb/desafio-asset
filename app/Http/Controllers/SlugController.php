@@ -6,11 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SlugDeleteRequest;
 use App\Services\SlugService;
 use App\Http\Requests\SlugShortenRequest;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use InvalidArgumentException;
-use RuntimeException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class SlugController extends Controller
 {
@@ -27,10 +25,10 @@ class SlugController extends Controller
         'slug' => $slug->slug,
         'original_url' => $slug->original_url,
       ]);
-    } catch (RuntimeException $e) {
+    } catch (HttpException $e) {
       return response()->json([
         'message' => $e->getMessage(),
-      ], 404);
+      ], $e->getStatusCode());
     }
   }
 
@@ -39,14 +37,10 @@ class SlugController extends Controller
     try {
       $this->slugService->deleteSlug($slug, $request->input('api_key'));
       return response()->json(['message' => 'Slug eliminado correctamente.']);
-    } catch (ModelNotFoundException $e) {
+    } catch (HttpException $e) {
       return response()->json([
         'message' => $e->getMessage(),
-      ], 404);
-    } catch (InvalidArgumentException $e) {
-      return response()->json([
-        'message' => $e->getMessage(),
-      ], 400);
+      ], $e->getStatusCode());
     }
   }
 
@@ -59,10 +53,10 @@ class SlugController extends Controller
         ip: $request->ip()
       );
       return redirect()->away($slug->original_url);
-    } catch (ModelNotFoundException $e) {
+    } catch (HttpException $e) {
       return response()->json([
         'message' => $e->getMessage(),
-      ], 404);
+      ], $e->getStatusCode());
     }
   }
 }

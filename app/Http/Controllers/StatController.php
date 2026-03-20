@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StatsRequest;
 use App\Services\StatService;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class StatController extends Controller
@@ -23,10 +22,6 @@ class StatController extends Controller
       );
 
       return response()->json($stats);
-    } catch (ModelNotFoundException $e) {
-      return response()->json([
-        'message' => 'Slug no encontrado.',
-      ], 404);
     } catch (HttpException $e) {
       return response()->json([
         'message' => $e->getMessage(),
