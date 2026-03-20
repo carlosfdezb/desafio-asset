@@ -30,6 +30,10 @@ class SlugService
       throw new HttpException(404, 'Slug no encontrado.');
     }
 
+    if ($slugModel->isExpired()) {
+      throw new HttpException(410, 'Este enlace ha expirado.');
+    }
+
     RecordStatJob::dispatch(
       $slugModel->id,
       $referer,
@@ -61,6 +65,7 @@ class SlugService
       $slug->original_url = $data['url'];
       $slug->slug = $slugValue;
       $slug->api_key = !empty($data['api_key']) ? Hash::make($data['api_key']) : null;
+      $slug->expires_at = $data['expires_at'] ?? null;
 
       return $this->slugRepository->save($slug);
     });
@@ -74,6 +79,7 @@ class SlugService
     $slug->original_url = $data['url'];
     $slug->slug = $slugValue;
     $slug->api_key = !empty($data['api_key']) ? Hash::make($data['api_key']) : null;
+    $slug->expires_at = $data['expires_at'] ?? null;
     return $this->slugRepository->save($slug);
   }
 

@@ -34,6 +34,7 @@ class SlugController extends Controller
         'short_url' => url('/' . $slug->slug),
         'slug' => $slug->slug,
         'original_url' => $slug->original_url,
+        'expires_at' => $slug->expires_at,
       ]);
     } catch (HttpException $e) {
       return response()->json([

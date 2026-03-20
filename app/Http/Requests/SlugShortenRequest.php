@@ -19,6 +19,7 @@ class SlugShortenRequest extends FormRequest
       'url' => ['required', 'url:http,https'],
       'custom_slug' => ['nullable', 'string', 'max:100'],
       'api_key' => ['nullable', 'string', 'min:8', 'max:255'],
+      'expires_at' => ['nullable', 'date', 'after:now'],
     ];
   }
 
@@ -32,6 +33,8 @@ class SlugShortenRequest extends FormRequest
       'api_key.string' => 'La API key debe ser una cadena de texto.',
       'api_key.min' => 'La API key debe tener al menos 8 caracteres.',
       'api_key.max' => 'La API key no puede tener más de 255 caracteres.',
+      'expires_at.date' => 'La fecha de expiración debe ser una fecha válida.',
+      'expires_at.after' => 'La fecha de expiración debe ser posterior a la fecha actual.',
     ];
   }
 
