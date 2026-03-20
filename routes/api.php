@@ -8,6 +8,6 @@ use Illuminate\Support\Facades\Route;
 Route::post('/shorten', [SlugController::class, 'shorten']);
 Route::delete('/{slug}', [SlugController::class, 'delete']);
 
-Route::get('stats/{slug}', [StatController::class, 'stats']);
+Route::get('stats/{slug}', [StatController::class, 'stats'])->middleware('throttle:api');
 
 Route::get('/health', [HealthController::class, '__invoke']);
